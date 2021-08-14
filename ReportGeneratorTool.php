@@ -62,23 +62,23 @@ if (php_sapi_name() == 'cli') {
     if(!file_exists($config)) {
         throw new Exception("Cannot find config file");
     }
-    $filterVar = getopt(null, ["filter:"])['filter'];
     $functionVar = getopt(null, ["function:"])['function'];
-    $reportVar = getopt(null, ["report:"])['report'];
-    $outputVar = getopt(null, ["output:"])['output'];
-    $typeVar = getopt(null, ["type:"])['type'];
-
-    $filterArray = explode(',', $filterVar);
-    $filters = array();
-    foreach ($filterArray as $filter){
-        $val = explode(':', $filter);
-        $filters['{{'.$val[0].'}}'] = $val[1];
-    }
-
-    var_dump($filters);
 
     //    ReportGeneratorTool::init();
     if($functionVar == 'generate'){
+
+        $reportVar = getopt(null, ["report:"])['report'];
+        $outputVar = getopt(null, ["output:"])['output'];
+        $typeVar = getopt(null, ["type:"])['type'];
+        $filterVar = getopt(null, ["filter:"])['filter'];
+
+        $filterArray = explode(',', $filterVar);
+        $filters = array();
+        foreach ($filterArray as $filter){
+            $val = explode(':', $filter);
+            $filters['{{'.$val[0].'}}'] = $val[1];
+        }
+
         $outputTypeClassname = ucfirst(strtolower($outputVar)).'OutputType';
 
         $filterClassName = ucfirst(strtolower($typeVar)).'Filter';

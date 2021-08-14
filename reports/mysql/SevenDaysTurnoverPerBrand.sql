@@ -1,5 +1,5 @@
 SELECT
-    b.name,
+    b.name brand_name,
     sum(turnover) turnover
 FROM
     gmv

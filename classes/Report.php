@@ -16,7 +16,6 @@ class Report {
         $this->raw = self::getReportFileContents($report);
 
         $this->raw_query = $reportFilter->apply($this->raw);
-        var_dump($this->raw_query);
 
         $this->options['Environment'] = $environment;
 
@@ -72,16 +71,9 @@ class Report {
 
         $this->options['Type'] = Config::get()['default_file_extension_mapping'][$file_type];
 
-        $classname = $this->options['Type'].'Source';
-        var_dump($classname);
-        if(!class_exists($classname)) {
-            throw new exception("Unknown report type '".$this->options['Type']."'");
-        }
         if(!isset($this->options['Database'])) $this->options['Database'] = strtolower($this->options['Type']);
 
         if(!isset($this->options['Name'])) $this->options['Name'] = $this->report;
-
-        $classname::init($this);
     }
 
 }

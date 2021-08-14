@@ -57,9 +57,8 @@ class MysqlSource extends ReportSourceBase {
 
     public static function run(&$report): void
     {
+        self::init($report);
         self::openConnection($report);
-
-        var_dump($report->raw_query);
 
         $sql = $report->raw_query;
 
