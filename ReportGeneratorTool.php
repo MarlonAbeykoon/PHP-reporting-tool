@@ -9,10 +9,10 @@ session_start();
 class ReportGeneratorTool {
 
     private ReportOutput $reportOutput;
-    private ReportFilter $reportFilter;
+    private ?ReportFilter $reportFilter;
     private ReportSource $reportSource;
 
-    public function __construct(ReportOutput $reportOutput, ReportSource $reportSource, ReportFilter $reportFilter) {
+    public function __construct(ReportOutput $reportOutput, ReportSource $reportSource, ?ReportFilter $reportFilter = null) {
         $this->reportOutput = $reportOutput;
         $this->reportFilter = $reportFilter;
         $this->reportSource = $reportSource;

@@ -8,14 +8,16 @@ class Report {
 
     protected $raw;
 
-    public function __construct($report, ReportFilter $reportFilter, $environment = null, $use_cache = null) {
+    public function __construct($report, ?ReportFilter $reportFilter = null, $environment = null) {
 
         $this->report = $report;
 
         //get the raw report file
         $this->raw = self::getReportFileContents($report);
 
-        $this->raw_query = $reportFilter->apply($this->raw);
+        if($reportFilter !== null){
+            $this->raw_query = $reportFilter->apply($this->raw);
+        }
 
         $this->options['Environment'] = $environment;
 
@@ -25,7 +27,7 @@ class Report {
     /**
      * @throws Exception
      */
-    public static function getFileLocation($report): string
+    public static function getFileLocation(string $report): string
     {
 
         //make sure the report path doesn't go up a level for security reasons

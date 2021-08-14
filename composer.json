@@ -15,7 +15,7 @@
     "phpunit/phpunit": "^9.5.2"
   },
   "autoload": {
-    "classmap": ["classes", "configs"]
+    "classmap": ["classes", "configs", "tests"]
   },
   "minimum-stability": "dev"
 }

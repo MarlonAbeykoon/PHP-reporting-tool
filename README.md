@@ -9,7 +9,7 @@
 
 `composer install`
 
-set mysql details in `environments` section in _configs/Config.php_
+set mysql details in `environments` section in _configs/con.php_
 
 ###### **Report generation**
 
