@@ -2,20 +2,31 @@
 
 class CsvOutputType extends ReportOutputBase {
 
-    public static function generate($report): void {
+    protected const FILE_EXTENSION = '.csv';
+    protected const MODE = 'w';
+    private string $separator = ',';
+    private string $enclosure = '"';
+    protected string $reportName;
 
-        $file_name = preg_replace(array('/[\s]+/','/[^0-9a-zA-Z\-_\.]/'),array('_',''),$report->options['Name']);
-
-        self::store($file_name, $report->options['DataSet']);
+    public function __construct(string $reportName)
+    {
+        $this->reportName = $reportName;
     }
 
-    protected static function store($file_name, $dataset): void {
-        $out = fopen($file_name.'.csv', 'w');
+    public function generate(Report $report): void {
 
-        fputcsv($out, array_keys($dataset[0]), $separator = ",", $enclosure = '"', $escape_char = "\\");
+        $file_name = preg_replace(array('/[\s]+/','/[^0-9a-zA-Z\-_\.]/'),array('_',''), $report->options['Name']);
+
+        $this->store($file_name, $report->options['DataSet']);
+    }
+
+    protected function store($file_name, $dataset): void {
+        $out = fopen($file_name.self::FILE_EXTENSION, self::MODE);
+
+        fputcsv($out, array_keys($dataset[0]), $separator = $this->separator, $enclosure = $this->enclosure);
 
         foreach ($dataset as $value){
-            fputcsv($out, $value, $separator = ",", $enclosure = '"', $escape_char = "\\");
+            fputcsv($out, $value, $separator = $this->separator, $enclosure = $this->enclosure);
         }
         fclose($out);
     }

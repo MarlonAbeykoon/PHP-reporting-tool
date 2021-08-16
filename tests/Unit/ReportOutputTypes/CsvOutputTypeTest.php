@@ -7,14 +7,14 @@ class CsvOutputTypeTest extends TestCase {
     public function test_it_generates_csv():void
     {
         $report = ReportDummy::ReportObject();
-        CsvOutputType::generate($report);
+        (new CsvOutputType('mysqltestReport'))->generate($report);
         $this->assertFileExists('mysqltestReport.sql.csv');
     }
 
     public function test_csv_contains_correct_data():void
     {
         $report = ReportDummy::ReportObject();
-        CsvOutputType::generate($report);
+        (new CsvOutputType('mysqltestReport'))->generate($report);
         $this->assertFileExists('mysqltestReport.sql.csv');
         $contents = file_get_contents('mysqltestReport.sql.csv');
 

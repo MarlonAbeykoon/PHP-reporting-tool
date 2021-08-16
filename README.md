@@ -11,6 +11,9 @@
 
 set mysql details in `environments` section in _configs/con.php_
 
+###### **Run tests**
+`vendor/bin/phpunit tests`
+
 ###### **Report generation**
 
 List available reports - `php ReportGeneratorTool.php --function=listReports`

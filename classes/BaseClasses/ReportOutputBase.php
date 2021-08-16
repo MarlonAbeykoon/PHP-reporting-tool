@@ -2,12 +2,13 @@
 
 abstract class ReportOutputBase implements ReportOutput {
 
-    public static function prepareReport($report, ReportFilter $reportFilter): Report
+    protected const FILE_EXTENSION = '';
+    protected string $reportName;
+
+    public function prepareReport(ReportFilter $reportFilter): Report
     {
         $environment = $_SESSION['environment'];
 
-        $report = new Report($report, $reportFilter, $environment);
-
-        return $report;
+        return new Report($this->reportName, $reportFilter, $environment);
     }
 }

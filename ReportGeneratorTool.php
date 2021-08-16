@@ -18,9 +18,9 @@ class ReportGeneratorTool {
         $this->reportSource = $reportSource;
     }
 
-    public function generate(string $reportName, array $filters): int {
+    public function generate(array $filters): int {
         try {
-            $report = $this->reportOutput->prepareReport($reportName, $this->reportFilter->setFilters($filters));
+            $report = $this->reportOutput->prepareReport($this->reportFilter->setFilters($filters));
         }
         catch(Exception $e) {
             fwrite(STDERR, "==> An error occurred while preparing the report");
@@ -99,7 +99,7 @@ if (php_sapi_name() == 'cli') {
             throw new Exception('Report not found - '.$reportVar);
         }
 
-        (new ReportGeneratorTool(new $outputTypeClassname(), new $sourceClassName(), new $filterClassName()))->generate($reportVar, $filters);  // Uses Strategy design pattern to switch between algorithms for report outputs
+        (new ReportGeneratorTool(new $outputTypeClassname($reportVar), new $sourceClassName(), new $filterClassName()))->generate($filters);  // Uses Strategy design pattern to switch between algorithms for report outputs
 
     }
     elseif($functionVar === 'listReports'){
