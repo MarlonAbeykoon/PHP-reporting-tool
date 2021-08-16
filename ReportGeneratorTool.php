@@ -61,7 +61,7 @@ class ReportGeneratorTool {
 if (php_sapi_name() == 'cli') {
     $_SESSION['environment'] = 'main';
 
-    $config = 'configs/con.php';
+    $config = 'configs/conf.php';
     if(!file_exists($config)) {
         throw new Exception("Cannot find config file");
     }
