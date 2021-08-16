@@ -25,7 +25,7 @@ class Report {
     }
 
     /**
-     * @throws Exception
+     * @throws ReportException
      */
     public static function getFileLocation(string $report): string
     {
@@ -35,7 +35,7 @@ class Report {
             $reportdir = realpath(Config::get()['reportDir']).'/';
             $reportpath = substr(realpath(Config::get()['reportDir'].'/'.$report),0,strlen($reportdir));
 
-            if($reportpath !== $reportdir) throw new Exception('Invalid report - '.$report);
+            if($reportpath !== $reportdir) throw new ReportException('Invalid report - '.$report);
         }
 
         $reportDir = Config::get()['reportDir'];

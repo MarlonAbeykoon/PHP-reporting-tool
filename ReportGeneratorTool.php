@@ -23,6 +23,7 @@ class ReportGeneratorTool {
             $report = $this->reportOutput->prepareReport($this->reportFilter->setFilters($filters));
         }
         catch(Exception $e) {
+            fwrite(STDERR, $e->getMessage());
             fwrite(STDERR, "==> An error occurred while preparing the report");
             return (-1);
         }
@@ -31,6 +32,7 @@ class ReportGeneratorTool {
             $this->reportSource::run($report);
         }
         catch(Exception $e) {
+            fwrite(STDERR, $e->getMessage());
             fwrite(STDERR, "==> An error occurred while running the report");
             return (-1);
         }
@@ -39,6 +41,7 @@ class ReportGeneratorTool {
             $this->reportOutput->generate($report);
         }
         catch(Exception $e) {
+            fwrite(STDERR, $e->getMessage());
             fwrite(STDERR, "==> An error occurred while generating the report");
             return (-1);
         }
@@ -66,11 +69,15 @@ if (php_sapi_name() == 'cli') {
 
     //    ReportGeneratorTool::init();
     if($functionVar == 'generate'){
-
-        $reportVar = getopt(null, ["report:"])['report'];
-        $outputVar = getopt(null, ["output:"])['output'];
-        $typeVar = getopt(null, ["type:"])['type'];
-        $filterVar = getopt(null, ["filter:"])['filter'];
+        try{
+            $reportVar = getopt(null, ["report:"])['report'];
+            $outputVar = getopt(null, ["output:"])['output'];
+            $typeVar = getopt(null, ["type:"])['type'];
+            $filterVar = getopt(null, ["filter:"])['filter'];
+        }
+        catch (Exception $e) {
+            fwrite(STDERR, "==> Error in input list");
+        }
 
         $filterArray = explode(',', $filterVar);
         $filters = array();
@@ -86,7 +93,7 @@ if (php_sapi_name() == 'cli') {
         $sourceClassName = ucfirst(strtolower($typeVar)).'Source';
 
         if(!class_exists($sourceClassName)) {
-            throw new exception("Unknown report type '".$sourceClassName."'");
+            fwrite(STDERR, "==> Unknown report type ". $sourceClassName);
         }
 
         if(!class_exists($outputTypeClassname)) {
@@ -96,6 +103,7 @@ if (php_sapi_name() == 'cli') {
 
         $reportDir = Config::get()['reportDir'];
         if(!file_exists($reportDir.'/'.$reportVar)) {
+            fwrite(STDERR, "==> Report not found ". $reportVar);
             throw new Exception('Report not found - '.$reportVar);
         }
 
@@ -104,6 +112,9 @@ if (php_sapi_name() == 'cli') {
     }
     elseif($functionVar === 'listReports'){
         ReportGeneratorTool::listAvailableReports();
+    }
+    else{
+        fwrite(STDERR, "Use generate, listReports commands");
     }
 
 }

@@ -55,10 +55,19 @@ class MysqlSource extends ReportSourceBase {
         unset($report->conn);
     }
 
+    /**
+     * @throws MysqlSourceTypeException
+     */
     public static function run(&$report): void
     {
-        self::init($report);
-        self::openConnection($report);
+        try {
+            self::init($report);
+            self::openConnection($report);
+        }
+        catch (Exception $e) {
+            throw new MysqlSourceTypeException("Error occurred while connecting to the database");
+        }
+
 
         $sql = $report->raw_query;
 
@@ -71,7 +80,12 @@ class MysqlSource extends ReportSourceBase {
             return;
         }
 
-        $result = $report->conn->query($query);
+        try {
+            $result = $report->conn->query($query);
+        }
+        catch (Exception $e) {
+            throw new MysqlSourceTypeException("Error occurred while executing the query");
+        }
 
         $dataset = array();
         while($row = $result->fetch(PDO::FETCH_ASSOC)) {
